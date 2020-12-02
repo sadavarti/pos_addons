@@ -11,9 +11,9 @@ class POSOrderValidate(models.Model):
     def create_from_ui(self, orders):
         order_ids = super(POSOrderValidate, self).create_from_ui(orders)
         for order_id in self.browse(order_ids):
-            order_id.write({'state': 'done'})
             try:
                 order_id.picking_id.do_new_transfer()
+                order_id.write({'state': 'done'})
             except Exception as e:
                 _logger.warning(e.__str__())
             # stock_move = self.env['stock.move'].search([('picking_id', '=', stock_picking_id.id)])
